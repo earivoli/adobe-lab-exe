@@ -1,0 +1,19 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 384 256"
+  width="384"
+  height="256"
+  role="img"
+  aria-label="Credit card icon"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="12"
+>
+  <rect x="10" y="10" rx="24" ry="24" width="364" height="236"></rect>
+  <rect x="24" y="56" width="336" height="40" fill="currentColor" stroke="none"></rect>
+  <g fill="currentColor" stroke="none" transform="translate(56,168)">
+    <circle cx="24" cy="24" r="24"></circle>
+    <circle cx="0" cy="24" r="24" fill="none" stroke="currentColor" stroke-width="12"></circle>
+  </g>
+  <rect x="232" y="168" width="96" height="32" rx="16" ry="16" fill="currentColor" stroke="none"></rect>
+</svg>
