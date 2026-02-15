@@ -55,8 +55,19 @@ function maskMobileNumber(mobileNumber) {
   // Mask first 5 digits and keep the rest
   return ` ${'*'.repeat(5)}${value.substring(5)}`;
 }
+/**
+ * @param {*} mobileNumber;
+@returns {String}
+ * 
+ */
+
+function generateOTP(mobileNumber){
+  const OTP = Math.floor(100000 + Math.random() * 900000);
+  console.log(OTP);
+  return OTP;
+}
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getFullName, days, submitFormArrayToString, maskMobileNumber,
+  getFullName, days, submitFormArrayToString, maskMobileNumber,generateOTP
 };
