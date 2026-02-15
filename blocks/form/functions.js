@@ -69,7 +69,14 @@ function generateOTP(mobileNumber){
   return OTP;
 }
 
+function validateOTP(otp){
+  if(otp===sessionStorage.getItem("otp")){
+    return "Request Granded...";
+  }
+  return "Request Denied"
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export {
-  getFullName, days, submitFormArrayToString, maskMobileNumber,generateOTP
+  getFullName, days, submitFormArrayToString, maskMobileNumber,generateOTP,validateOTP
 };
