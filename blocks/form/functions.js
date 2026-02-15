@@ -64,6 +64,10 @@ function maskMobileNumber(mobileNumber) {
 function generateOTP(mobileNumber){
   const otp = Math.floor(100000 + Math.random() * 900000);
   console.log(otp);
+  //removing old session
+  if(sessionStorage.getItem("otp")){
+    sessionStorage.removeItem("otp");
+  }
   sessionStorage.setItem("otp", otp);
   console.log("Stored OTP:", sessionStorage.getItem("otp"))
   return OTP;
