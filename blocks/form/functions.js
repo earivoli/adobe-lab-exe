@@ -75,8 +75,10 @@ function generateOTP(mobileNumber){
 
 function validateOTP(otp){
   if(otp===sessionStorage.getItem("otp")){
+    console.log("Request Granded...")
     return "Request Granded...";
   }
+  console.log("Request Denied")
   return "Request Denied"
 }
 
