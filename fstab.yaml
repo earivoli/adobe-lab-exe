@@ -3,7 +3,7 @@ mountpoints:
     url: https://author-p96753-e1523920.adobeaemcloud.com/bin/franklin.delivery/earivoli/adobe-lab-exe/main
     type: "markup"
     suffix: ".html"
-  /:
-    url: https://drive.google.com/drive/folders/1d-LPmvvWZdygYSn_YtS-sS1Ovk5whWJ2
+
+    /sheets: https://drive.google.com/drive/folders/1d-LPmvvWZdygYSn_YtS-sS1Ovk5whWJ2
     type: "markup"
     suffix: ".html"
