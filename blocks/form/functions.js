@@ -82,6 +82,15 @@ function validateOTP(otp){
   return "Request Denied"
 }
 
+function saveCardType(card){
+  const cardType = card;
+  console.log(cardType)
+  sessionStorage.setItem("cardType",cardType);
+}
+
+function getCardFromSession(card){
+  return sessionStorage.getItem(cardType)
+}
 // eslint-disable-next-line import/prefer-default-export
 export {
   getFullName, days, submitFormArrayToString, maskMobileNumber,generateOTP,validateOTP
