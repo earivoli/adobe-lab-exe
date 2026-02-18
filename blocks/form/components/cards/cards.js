@@ -26,6 +26,7 @@ export default function decorate(element, fieldJson, container, formId) {
             const { payload } = e;
             payload?.changes?.forEach((change) => {
                 if (change?.propertyName === 'enum') {
+                    console.log("Ezhiloli",element,change.currentValue);
                     createCard(element, change.currentValue);
                 }
             });
