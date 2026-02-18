@@ -44,13 +44,7 @@ export default function decorate(element, fieldJson, container, formId) {
 }
 
 
-/**
- * Mutates the given DOM element by rewriting image URLs from *.hlx.live to *.aem.live.
- * Updates src and srcset on <img>, <source>, and <picture> within the element.
- *
- * @param {Element} rootEl - The container element to process (e.g., your fieldset).
- * @returns {Element} The same element, after in-place updates.
- */
+
 function rewriteHlxToAemInPlace(rootEl) {
   if (!rootEl || !(rootEl instanceof Element)) return rootEl;
 
