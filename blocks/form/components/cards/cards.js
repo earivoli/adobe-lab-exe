@@ -28,7 +28,7 @@ export default function decorate(element, fieldJson, container, formId) {
                 if (change?.propertyName === 'enum') {
 
                     console.log("Ezhiloli",element,change.currentValue);
-                    element = rewriteHlxToAemImages(element)
+                    element = rewriteHlxToAemInPlace(element)
                     createCard(element, change.currentValue);
                 }
             });
