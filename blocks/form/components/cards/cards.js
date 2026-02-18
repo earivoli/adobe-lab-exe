@@ -16,8 +16,8 @@ function createCard(element, enums) {
     if(imageUrl && imageUrl !== undefined) {
       imageUrl = imageUrl.replace('hlx','aem');
     }
-    const image = createOptimizedPicture(enums[index].image || 'https://main--afb--jalagari.aem.page/lab/images/card.png', 'card-image');
-   radioWrapper.appendChild(imageUrl);
+    const image = createOptimizedPicture(imageUrl || 'https://main--afb--jalagari.aem.page/lab/images/card.png', 'card-image');
+   radioWrapper.appendChild(image);
   });
 }
 
