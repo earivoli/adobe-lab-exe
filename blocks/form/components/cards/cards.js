@@ -12,7 +12,7 @@ function createCard(element, enums) {
       label.textContent = enums[index]?.name;
     }
     radioWrapper.querySelector('input').dataset.index = index;
-    const image = createOptimizedPicture(enums[index].image || 'https://main--afb--jalagari.hlx.page/lab/images/card.png', 'card-image');
+    const image = createOptimizedPicture(enums[index].image || 'https://main--afb--jalagari.aem.live/lab/images/card.png', 'card-image');
    radioWrapper.appendChild(image);
   });
 }
