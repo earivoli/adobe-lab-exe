@@ -44,101 +44,74 @@ export default function decorate(element, fieldJson, container, formId) {
 }
 
 
-function rewriteHlxToAemImages(input, options = {}) {
-  const { mutate = false } = options;
+/**
+ * Mutates the given DOM element by rewriting image URLs from *.hlx.live to *.aem.live.
+ * Updates src and srcset on <img>, <source>, and <picture> within the element.
+ *
+ * @param {Element} rootEl - The container element to process (e.g., your fieldset).
+ * @returns {Element} The same element, after in-place updates.
+ */
+function rewriteHlxToAemInPlace(rootEl) {
+  if (!rootEl || !(rootEl instanceof Element)) return rootEl;
 
-  // --- helpers ---
-  function rewriteDomain(url) {
+  // Change only the hostname from *.hlx.live to *.aem.live
+  const rewriteDomain = (url) => {
     try {
-      const u = new URL(url, window.location.origin);
+      const base = (typeof window !== 'undefined' && window.location) ? window.location.origin : 'https://example.com';
+      const u = new URL(url, base);
       if (u.hostname.endsWith('.hlx.live')) {
         u.hostname = u.hostname.replace('.hlx.live', '.aem.live');
       }
       return u.toString();
     } catch {
-      // Not a valid absolute/relative URL for URL(), return as-is
-      return url;
+      return url; // leave unchanged if not a valid/parseable URL
     }
-  }
+  };
 
-  function rewriteSrcset(srcset) {
+  // Handle "url 1x, url2 2x" or "url 750w"
+  const rewriteSrcset = (srcset) => {
     if (!srcset || typeof srcset !== 'string') return srcset;
     return srcset
       .split(',')
       .map(part => {
         const trimmed = part.trim();
         if (!trimmed) return trimmed;
-        const pieces = trimmed.split(/\s+/, 2);
-        const url = pieces[0];
-        const descriptor = pieces[1] || '';
+        const [url, descriptor = ''] = trimmed.split(/\s+/, 2);
         const rewritten = rewriteDomain(url);
         return descriptor ? `${rewritten} ${descriptor}` : rewritten;
       })
       .join(', ');
-  }
+  };
 
-  function processRoot(root) {
-    if (!root) return root;
-
-    // <img>
-    root.querySelectorAll('img[src]').forEach(img => {
-      const src = img.getAttribute('src');
-      if (src) img.setAttribute('src', rewriteDomain(src));
-      // Some setups also use srcset on <img>
-      if (img.hasAttribute('srcset')) {
-        img.setAttribute('srcset', rewriteSrcset(img.getAttribute('srcset')));
-      }
-    });
-
-    // <source> (picture/video/audio sources)
-    root.querySelectorAll('source').forEach(source => {
-      if (source.hasAttribute('srcset')) {
-        source.setAttribute('srcset', rewriteSrcset(source.getAttribute('srcset')));
-      }
-      if (source.hasAttribute('src')) {
-        source.setAttribute('src', rewriteDomain(source.getAttribute('src')));
-      }
-    });
-
-    // <picture> (rarely has src/srcset, but safe to cover)
-    root.querySelectorAll('picture').forEach(pic => {
-      if (pic.hasAttribute('srcset')) {
-        pic.setAttribute('srcset', rewriteSrcset(pic.getAttribute('srcset')));
-      }
-      if (pic.hasAttribute('src')) {
-        pic.setAttribute('src', rewriteDomain(pic.getAttribute('src')));
-      }
-    });
-
-    return root;
-  }
-
-  // --- main dispatch: string vs DOM ---
-  const isString = typeof input === 'string';
-
-  if (isString) {
-    // Parse HTML string
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(input, 'text/html');
-
-    // If input is a fragment (like just a <fieldset>), it will appear under body.
-    // We’ll process the body.
-    processRoot(doc);
-
-    // If the input looked like a single root element, return its outerHTML.
-    // Otherwise, return the whole <body> inner HTML.
-    const body = doc.body;
-    if (body && body.children.length === 1) {
-      return body.children[0].outerHTML;
+  // <img>
+  rootEl.querySelectorAll('img').forEach(img => {
+    if (img.hasAttribute('src')) {
+      img.setAttribute('src', rewriteDomain(img.getAttribute('src')));
     }
-    return body.innerHTML;
-  } else {
-    // Element/Node path
-    const root = input instanceof Node ? input : null;
-    if (!root) return input;
+    if (img.hasAttribute('srcset')) {
+      img.setAttribute('srcset', rewriteSrcset(img.getAttribute('srcset')));
+    }
+  });
 
-    const target = mutate ? root : root.cloneNode(true);
-    processRoot(target);
-    return target;
-  }
+  // <source> (within <picture>, <video>, etc.)
+  rootEl.querySelectorAll('source').forEach(source => {
+    if (source.hasAttribute('src')) {
+      source.setAttribute('src', rewriteDomain(source.getAttribute('src')));
+    }
+    if (source.hasAttribute('srcset')) {
+      source.setAttribute('srcset', rewriteSrcset(source.getAttribute('srcset')));
+    }
+  });
+
+  // <picture> (rarely has src/srcset, but safe to support)
+  rootEl.querySelectorAll('picture').forEach(pic => {
+    if (pic.hasAttribute('src')) {
+      pic.setAttribute('src', rewriteDomain(pic.getAttribute('src')));
+    }
+    if (pic.hasAttribute('srcset')) {
+      pic.setAttribute('srcset', rewriteSrcset(pic.getAttribute('srcset')));
+    }
+  });
+
+  return rootEl;
 }
