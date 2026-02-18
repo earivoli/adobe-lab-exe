@@ -12,8 +12,12 @@ function createCard(element, enums) {
       label.textContent = enums[index]?.name;
     }
     radioWrapper.querySelector('input').dataset.index = index;
+      let imageUrl = enums[index].image;
+    if(imageUrl && imageUrl !== undefined) {
+      imageUrl = imageUrl.replace('hlx','aem');
+    }
     const image = createOptimizedPicture(enums[index].image || 'https://main--afb--jalagari.aem.page/lab/images/card.png', 'card-image');
-   radioWrapper.appendChild(image);
+   radioWrapper.appendChild(imageUrl);
   });
 }
 
